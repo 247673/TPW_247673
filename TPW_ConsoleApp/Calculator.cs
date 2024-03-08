@@ -29,7 +29,7 @@ class Calculator
         double num1 = Convert.ToDouble(Console.ReadLine());
         Console.WriteLine("Podaj drugą liczbę:");
         double num2 = Convert.ToDouble(Console.ReadLine());   
-        Console.WriteLine("Wybierz operację (+, -):");
+        Console.WriteLine("Wybierz operację (+ lub -):");
         char operation = Convert.ToChar(Console.ReadLine());
         double result = 0; 
         result = SimpleCalculator.Calculate(num1, num2, operation);
