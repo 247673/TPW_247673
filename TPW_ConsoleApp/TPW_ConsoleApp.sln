@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34622.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TPW_ConsoleApp", "TPW_ConsoleApp\TPW_ConsoleApp.csproj", "{DD81ACCB-C23B-45A1-98EF-ACE90981472D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TPW_TestProject", "TPW_TestProject\TPW_TestProject.csproj", "{0A9B6524-ED73-4422-9A03-368FF0550C89}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DD81ACCB-C23B-45A1-98EF-ACE90981472D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD81ACCB-C23B-45A1-98EF-ACE90981472D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD81ACCB-C23B-45A1-98EF-ACE90981472D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD81ACCB-C23B-45A1-98EF-ACE90981472D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A9B6524-ED73-4422-9A03-368FF0550C89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A9B6524-ED73-4422-9A03-368FF0550C89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A9B6524-ED73-4422-9A03-368FF0550C89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A9B6524-ED73-4422-9A03-368FF0550C89}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CCA9DFBB-6055-41A2-B118-24FDA59579A0}
+	EndGlobalSection
+EndGlobal
