@@ -23,7 +23,7 @@ class Calculator
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Prosty Kalkulator");
+        Console.WriteLine("Kalkulator");
         Console.WriteLine("------------------");
         Console.WriteLine("Podaj pierwszą liczbę:");
         double num1 = Convert.ToDouble(Console.ReadLine());
