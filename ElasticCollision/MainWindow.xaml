@@ -1,0 +1,34 @@
+﻿<Window x:Class="ElasticCollision.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ElasticCollision"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="571*"/>
+            <ColumnDefinition Width="229*"/>
+        </Grid.ColumnDefinitions>
+        <Canvas Background="Gray" Width="700" Height="300" Grid.ColumnSpan="2" Margin="50,67,50,67">
+            <ItemsControl ItemsSource="{Binding Balls}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Ellipse Width="{Binding Radius}" Height="{Binding Radius}" Fill="Blue">
+                            <Ellipse.RenderTransform>
+                                <TranslateTransform X="{Binding X}" Y="{Binding Y}"/>
+                            </Ellipse.RenderTransform>
+                        </Ellipse>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Canvas>
+        <Button Content="Generuj kulki" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="451,17,0,0" Click="GenerateBallsButton_Click"/>
+        <TextBox HorizontalAlignment="Left" Height="33" Margin="374,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="52" TextAlignment="Center"
+                 Text="{Binding NumberOfBallsToGenerate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="16"/>
+        <TextBlock HorizontalAlignment="Center" Height="52" Margin="0,1,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="125" TextAlignment="Center" FontSize="16">
+            <Run Text="Wpisz ile kul wygener"/><Run Language="pl-pl" Text="owac"/>
+        </TextBlock>
+    </Grid>
+</Window>
