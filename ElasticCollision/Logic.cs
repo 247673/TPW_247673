@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using static ElasticCollision.Data;
+﻿using static ElasticCollision.Data;
 
 namespace ElasticCollision
 {

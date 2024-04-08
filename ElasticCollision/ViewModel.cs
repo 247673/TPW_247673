@@ -1,27 +1,19 @@
-﻿using GalaSoft.MvvmLight.Command;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows.Input;
-using System.Linq;
-using static ElasticCollision.Data;
-using System;
 
 namespace ElasticCollision
 {
     public class ViewModel : INotifyPropertyChanged
     {
         private readonly InterfaceLogic _logic;
+        private const int CanvasWidth = 700;
+        private const int CanvasHeight = 300;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ObservableCollection<Model> Balls { get; } = new ObservableCollection<Model>();
 
         private int _numberOfBallsToGenerate;
-
-        public ViewModel(InterfaceLogic logic)
-        {
-            _logic = logic;
-        }
 
         public int NumberOfBallsToGenerate
         {
@@ -33,41 +25,67 @@ namespace ElasticCollision
             }
         }
 
+        public ViewModel(InterfaceLogic logic)
+        {
+            _logic = logic;
+        }
+
         public void Start()
         {
-            _logic.CreateBalls(NumberOfBallsToGenerate);
-            Update();
-            StartTimer(); // Rozpocznij timer po utworzeniu kulek
-        }
-
-        public void Update()
-        {
             Balls.Clear();
-            foreach (var ball in _logic.GetBalls()) // Użyj nowej metody GetBalls()
+            _logic.CreateBalls(NumberOfBallsToGenerate);
+            foreach (var ballData in _logic.GetBalls())
             {
-                Balls.Add(new Model
+                Model ballModel = new Model
                 {
-                    X = ball.X,
-                    Y = ball.Y,
-                    Radius = ball.Radius,
-                    VelocityX = ball.VelocityX,
-                    VelocityY = ball.VelocityY
-                });
+                    X = ballData.X,
+                    Y = ballData.Y,
+                    Radius = ballData.Radius,
+                    VelocityX = ballData.VelocityX,
+                    VelocityY = ballData.VelocityY
+                };
+                Balls.Add(ballModel);
             }
+            StartTimer();
         }
 
-        // Timer do aktualizacji pozycji kul
         private void StartTimer()
         {
             System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
-            timer.Interval = System.TimeSpan.FromMilliseconds(16.67); // Około 60 razy na sekundę
+            timer.Interval = TimeSpan.FromMilliseconds(16.67);
             timer.Tick += (sender, e) =>
             {
-                _logic.Move(); // Wywołaj metodę Move z klasy Logic
-                Update(); // Aktualizuj widok
+                Move();
             };
             timer.Start();
         }
+
+        public void Move()
+        {
+            foreach (var ball in Balls)
+            {
+                ball.X += ball.VelocityX;
+                ball.Y += ball.VelocityY;
+                UpdateBallPositions(ball);
+            }
+
+            OnPropertyChanged(nameof(Balls)); // Odświeżenie widoku po przesunięciu kulek
+        }
+
+
+        private void UpdateBallPositions(Model ball)
+        {
+            if (ball.X - ball.Radius <= 0 || ball.X + ball.Radius >= CanvasWidth)
+            {
+                ball.VelocityX = -ball.VelocityX;
+            }
+
+            if (ball.Y - ball.Radius <= 0 || ball.Y + ball.Radius >= CanvasHeight)
+            {
+                ball.VelocityY = -ball.VelocityY;
+            }
+        }
+
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
