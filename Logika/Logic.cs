@@ -2,35 +2,58 @@
 
 namespace Logika
 {
-    public interface ILogic
+    public class Logic : InterfejsLogic
     {
-        void CreateBall(double x, double y, double radius, double velocityX, double velocityY);
-        List<(double x, double y, double radius, double velocityX, double velocityY)> GetBalls();
-        void MoveBalls();
-    }
+        private InterfejsMenadzera menKulek;
+        private int _iloscKulek;
+        private int _szerokosc;
+        private int _wysokosc;
+        private int _promienKulek;
 
-    public class Logic : ILogic
-    {
-        private readonly IData _data;
-
-        public Logic(IData data)
+        public Logic(InterfejsMenadzera menadzerKulek)
         {
-            _data = data ?? throw new ArgumentNullException(nameof(data));
+            menKulek = menadzerKulek;
         }
 
-        public void CreateBall(double x, double y, double radius, double velocityX, double velocityY)
+        public InterfejsPolozenia GetPosition(int index)
         {
-            _data.CreateBall(x, y, radius, velocityX, velocityY);
+            if (index >= _iloscKulek || index < 0)
+            {
+                throw new IndexOutOfRangeException("Wrong index");
+            }
+            return new PolozenieKulki { X = menKulek.GetBall(index).X, Y = menKulek.GetBall(index).Y };
         }
 
-        public List<(double x, double y, double radius, double velocityX, double velocityY)> GetBalls()
+        private void MoveBall(object obj)
         {
-            return _data.GetBalls();
+            int index = (int)obj;
+            Random random = new Random();
+            int kierunekX;
+            int kierunekY;
+            while (true)
+            {
+                kierunekX = random.Next(-3, 3);
+                kierunekY = random.Next(-3, 3);
+                menKulek.GetBall(index).X += kierunekX;
+                menKulek.GetBall(index).Y += kierunekY;
+                if (menKulek.GetBall(index).X > 100 || menKulek.GetBall(index).X < 10 || menKulek.GetBall(index).Y > 100 || menKulek.GetBall(index).Y < 10)
+                {
+                    break;
+                }
+            }
         }
 
-        public void MoveBalls()
+        public void Initialize(int szerokosc, int wysokosc, int iloscKulek)
         {
-            _data.MoveBalls();
+            _iloscKulek = iloscKulek;
+            _szerokosc = szerokosc;
+            _wysokosc = wysokosc;
+            _promienKulek = 10;
+            Random random = new Random();
+            for (int i = 0; i < _iloscKulek; i++)
+            {
+                menKulek.CreateNewBall(random.Next(100) + _promienKulek, random.Next(100) + _promienKulek, _promienKulek);
+            }
         }
     }
 }

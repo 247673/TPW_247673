@@ -6,51 +6,24 @@ namespace Testy
     public class DaneTest
     {
         [TestMethod]
-        public void TestCreateBall()
+        public void CreateBallTest()
         {
-            // Arrange
-            var dataService = new Data();
-            var expectedX = 10.0;
-            var expectedY = 20.0;
-            var expectedRadius = 5.0;
-            var expectedVelocityX = 1.0;
-            var expectedVelocityY = 2.0;
-
-            // Act
-            dataService.CreateBall(expectedX, expectedY, expectedRadius, expectedVelocityX, expectedVelocityY);
-            var balls = dataService.GetBalls();
-
-            // Assert
-            Assert.IsNotNull(balls);
-            Assert.AreEqual(1, balls.Count);
-            Assert.AreEqual(expectedX, balls[0].x);
-            Assert.AreEqual(expectedY, balls[0].y);
-            Assert.AreEqual(expectedRadius, balls[0].radius);
-            Assert.AreEqual(expectedVelocityX, balls[0].velocityX);
-            Assert.AreEqual(expectedVelocityY, balls[0].velocityY);
+            InterfejsMenadzera menKulek = new MenadzerKulek();
+            menKulek.CreateNewBall(20, 5, 10);
+            Assert.AreEqual(1, menKulek.GetBallCount());
+            Assert.AreEqual(menKulek.GetBall(0).X, 20);
+            Assert.AreEqual(menKulek.GetBall(0).Y, 5);
+            Assert.AreEqual(menKulek.GetBall(0).Radius, 10);
         }
 
         [TestMethod]
-        public void TestMoveBalls()
+        public void UpdateBallTest()
         {
-            // Arrange
-            var dataService = new Data();
-            var initialX = 10.0;
-            var initialY = 20.0;
-            var velocityX = 1.0;
-            var velocityY = 2.0;
-            var radius = 5.0;
-            dataService.CreateBall(initialX, initialY, radius, velocityX, velocityY);
-
-            // Act
-            dataService.MoveBalls();
-            var balls = dataService.GetBalls();
-
-            // Assert
-            Assert.IsNotNull(balls);
-            Assert.AreEqual(1, balls.Count);
-            Assert.AreEqual(initialX + velocityX, balls[0].x);
-            Assert.AreEqual(initialY + velocityY, balls[0].y);
+            InterfejsMenadzera menKulek = new MenadzerKulek();
+            menKulek.CreateNewBall(20, 5, 10);
+            menKulek.UpdateBallStatus(0, 15, 1);
+            Assert.AreEqual(menKulek.GetBall(0).X, 15);
+            Assert.AreEqual(menKulek.GetBall(0).Y, 1);
         }
     }
 }
