@@ -2,57 +2,60 @@
 
 namespace Logika
 {
-    public class Logic : InterfejsLogic
+    public interface ILogic
     {
-        private InterfejsMenadzera menKulek;
-        private int _iloscKulek;
-        private int _szerokosc;
-        private int _wysokosc;
-        private int _promienKulek;
+        public void CreateBalls(int numberOfBalls);
+        void Move();
+        List<Data.Ball> GetBalls();
+        void UpdateBallPositions(Data.Ball balls);
+    }
 
-        public Logic(InterfejsMenadzera menadzerKulek)
-        {
-            menKulek = menadzerKulek;
-        }
+    public class Logic : ILogic
+    {
+        private readonly Random _random = new Random();
+        private const int CanvasWidth = 700;
+        private const int CanvasHeight = 300;
+        private readonly List<Data.Ball> balls = new List<Data.Ball>();
 
-        public InterfejsPolozenia GetPosition(int index)
+        public void CreateBalls(int numberOfBalls)
         {
-            if (index >= _iloscKulek || index < 0)
+            balls.Clear();
+            for (int i = 0; i < numberOfBalls; i++)
             {
-                throw new IndexOutOfRangeException("Wrong index");
-            }
-            return new PolozenieKulki { X = menKulek.GetBall(index).X, Y = menKulek.GetBall(index).Y };
-        }
-
-        private void MoveBall(object obj)
-        {
-            int index = (int)obj;
-            Random random = new Random();
-            int kierunekX;
-            int kierunekY;
-            while (true)
-            {
-                kierunekX = random.Next(-3, 3);
-                kierunekY = random.Next(-3, 3);
-                menKulek.GetBall(index).X += kierunekX;
-                menKulek.GetBall(index).Y += kierunekY;
-                if (menKulek.GetBall(index).X > 100 || menKulek.GetBall(index).X < 10 || menKulek.GetBall(index).Y > 100 || menKulek.GetBall(index).Y < 10)
+                balls.Add(new Data.Ball
                 {
-                    break;
-                }
+                    Radius = 5,
+                    X = _random.Next(5, CanvasWidth - 5), // Ustalamy zakres dla współrzędnych X
+                    Y = _random.Next(5, CanvasHeight - 5), // Ustalamy zakres dla współrzędnych Y
+                    VelocityX = (_random.NextDouble() * 6 - 3), // Ustalamy zakres prędkości X
+                    VelocityY = (_random.NextDouble() * 6 - 3) // Ustalamy zakres prędkości Y
+                });
             }
         }
 
-        public void Initialize(int szerokosc, int wysokosc, int iloscKulek)
+        public void Move()
         {
-            _iloscKulek = iloscKulek;
-            _szerokosc = szerokosc;
-            _wysokosc = wysokosc;
-            _promienKulek = 10;
-            Random random = new Random();
-            for (int i = 0; i < _iloscKulek; i++)
+            foreach (var ball in balls)
             {
-                menKulek.CreateNewBall(random.Next(100) + _promienKulek, random.Next(100) + _promienKulek, _promienKulek);
+                ball.X += ball.VelocityX;
+                ball.Y += ball.VelocityY;
+                UpdateBallPositions(ball);
+            }
+        }
+
+        public List<Data.Ball> GetBalls()
+        {
+            return balls;
+        }
+
+        public void UpdateBallPositions(Data.Ball ball)
+        {
+            // Przenoszenie kulki na nową losową pozycję, gdy wyleci poza Canvas
+            if (ball.X - ball.Radius <= 0 || ball.X + ball.Radius >= CanvasWidth ||
+                ball.Y - ball.Radius <= 0 || ball.Y + ball.Radius >= CanvasHeight)
+            {
+                ball.X = _random.Next(5, CanvasWidth - 5);
+                ball.Y = _random.Next(5, CanvasHeight - 5);
             }
         }
     }

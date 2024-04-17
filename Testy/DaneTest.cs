@@ -6,24 +6,29 @@ namespace Testy
     public class DaneTest
     {
         [TestMethod]
-        public void CreateBallTest()
+        public void GetAndSetTest()
         {
-            InterfejsMenadzera menKulek = new MenadzerKulek();
-            menKulek.CreateNewBall(20, 5, 10);
-            Assert.AreEqual(1, menKulek.GetBallCount());
-            Assert.AreEqual(menKulek.GetBall(0).X, 20);
-            Assert.AreEqual(menKulek.GetBall(0).Y, 5);
-            Assert.AreEqual(menKulek.GetBall(0).Radius, 10);
-        }
+            // Arrange
+            double expectedX = 10.0;
+            double expectedY = 20.0;
+            double expectedRadius = 5.0;
+            double expectedVelocityX = 2.0;
+            double expectedVelocityY = -3.0;
 
-        [TestMethod]
-        public void UpdateBallTest()
-        {
-            InterfejsMenadzera menKulek = new MenadzerKulek();
-            menKulek.CreateNewBall(20, 5, 10);
-            menKulek.UpdateBallStatus(0, 15, 1);
-            Assert.AreEqual(menKulek.GetBall(0).X, 15);
-            Assert.AreEqual(menKulek.GetBall(0).Y, 1);
+            // Act
+            Dane.Data.Ball ball = new Data.Ball();
+            ball.X = expectedX;
+            ball.Y = expectedY;
+            ball.Radius = expectedRadius;
+            ball.VelocityX = expectedVelocityX;
+            ball.VelocityY = expectedVelocityY;
+
+            // Assert
+            Assert.AreEqual(expectedX, ball.X);
+            Assert.AreEqual(expectedY, ball.Y);
+            Assert.AreEqual(expectedRadius, ball.Radius);
+            Assert.AreEqual(expectedVelocityX, ball.VelocityX);
+            Assert.AreEqual(expectedVelocityY, ball.VelocityY);
         }
     }
 }
