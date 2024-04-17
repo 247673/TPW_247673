@@ -51,10 +51,12 @@ namespace Logika
         public void UpdateBallPositions(Data.Ball ball)
         {
             // Przenoszenie kulki na nową losową pozycję, gdy wyleci poza Canvas
-            if (ball.X - ball.Radius <= 0 || ball.X + ball.Radius >= CanvasWidth ||
-                ball.Y - ball.Radius <= 0 || ball.Y + ball.Radius >= CanvasHeight)
+            if (ball.X - ball.Radius <= 0 || ball.X + ball.Radius >= CanvasWidth)
             {
                 ball.X = _random.Next(5, CanvasWidth - 5);
+            }
+            if (ball.Y - ball.Radius <= 0 || ball.Y + ball.Radius >= CanvasHeight)
+            {
                 ball.Y = _random.Next(5, CanvasHeight - 5);
             }
         }
