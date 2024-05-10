@@ -19,18 +19,14 @@ namespace Prezentacja
     public partial class MainWindow : Window
     {
         private readonly ViewModel _viewModel;
-        private DispatcherTimer _timer;
+        private readonly Logic _logic;
 
         public MainWindow()
         {
             InitializeComponent();
-            _viewModel = new ViewModel(new Logic());
+            _logic = new Logic();
+            _viewModel = new ViewModel(_logic);
             DataContext = _viewModel;
-        }
-
-        private void GenerateBallsButton_Click(object sender, RoutedEventArgs e)
-        {
-            _viewModel.Start();
         }
     }
 }

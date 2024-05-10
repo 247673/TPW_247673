@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Prezentacja"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="500" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="0*"/>
         </Grid.ColumnDefinitions>
-        <Canvas Width="700" Height="300" Background="Gray" Margin="39,96,39,38">
+        <Canvas Width="700" Height="300" Background="Gray" Margin="50,121,50,22">
             <ItemsControl ItemsSource="{Binding Balls}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
@@ -24,10 +24,9 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </Canvas>
-        <Button Content="Generuj kulki" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120" Margin="478,47,0,0" Click="GenerateBallsButton_Click" Height="20"/>
-        <TextBox HorizontalAlignment="Left" Height="34" Margin="388,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="52" TextAlignment="Center"
+        <TextBox HorizontalAlignment="Left" Height="43" Margin="448,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="81" TextAlignment="Center"
                  Text="{Binding NumberOfBallsToGenerate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="16"/>
-        <TextBlock HorizontalAlignment="Left" Height="52" Margin="229,31,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="124" TextAlignment="Center" FontSize="16">
+        <TextBlock HorizontalAlignment="Left" Height="52" Margin="238,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="140" TextAlignment="Center" FontSize="16">
             <Run Text="Wpisz ile kul wygener"/><Run Language="pl-pl" Text="owac"/>
         </TextBlock>
     </Grid>
