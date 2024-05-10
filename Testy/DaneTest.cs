@@ -14,6 +14,7 @@ namespace Testy
             double expectedRadius = 5.0;
             double expectedVelocityX = 2.0;
             double expectedVelocityY = -3.0;
+            double expectedWeight = 15.0;
 
             // Act
             Dane.Data.Ball ball = new Data.Ball();
@@ -22,6 +23,7 @@ namespace Testy
             ball.Radius = expectedRadius;
             ball.VelocityX = expectedVelocityX;
             ball.VelocityY = expectedVelocityY;
+            ball.Weight = expectedWeight;
 
             // Assert
             Assert.AreEqual(expectedX, ball.X);
@@ -29,6 +31,7 @@ namespace Testy
             Assert.AreEqual(expectedRadius, ball.Radius);
             Assert.AreEqual(expectedVelocityX, ball.VelocityX);
             Assert.AreEqual(expectedVelocityY, ball.VelocityY);
+            Assert.AreEqual(expectedWeight, ball.Weight);
         }
     }
 }
