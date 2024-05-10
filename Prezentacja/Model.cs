@@ -15,6 +15,7 @@ namespace Prezentacja
         private double _radius;
         private double _velocityX;
         private double _velocityY;
+        private double _weight;
 
         public double X
         {
@@ -44,6 +45,12 @@ namespace Prezentacja
         {
             get { return _velocityY; }
             set { _velocityY = value; OnPropertyChanged(nameof(VelocityY)); }
+        }
+
+        public double Weight
+        {
+            get { return _weight; }
+            set { _weight = value; OnPropertyChanged(nameof(Weight)); }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

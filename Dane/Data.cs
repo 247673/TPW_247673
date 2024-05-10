@@ -9,6 +9,7 @@
             public double Radius { get; set; }
             public double VelocityX { get; set; }
             public double VelocityY { get; set; }
+            public double Weight { get; set; }
         }
     }
 }
