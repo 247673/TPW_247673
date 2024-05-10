@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reactive.Linq;
+using System.Windows.Threading;
 using Logika;
 
 namespace Prezentacja
@@ -12,9 +11,7 @@ namespace Prezentacja
     public class ViewModel : INotifyPropertyChanged
     {
         private readonly ILogic _logic;
-        private const int CanvasWidth = 700;
-        private const int CanvasHeight = 300;
-
+        private readonly Dispatcher _dispatcher = Dispatcher.CurrentDispatcher;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ObservableCollection<Model> Balls { get; } = new ObservableCollection<Model>();
@@ -34,11 +31,6 @@ namespace Prezentacja
         public ViewModel(ILogic logic)
         {
             _logic = logic;
-        }
-
-        public void Start()
-        {
-            Balls.Clear();
             _logic.CreateBalls(NumberOfBallsToGenerate);
             foreach (var ballData in _logic.GetBalls())
             {
@@ -52,46 +44,64 @@ namespace Prezentacja
                 };
                 Balls.Add(ballModel);
             }
-            StartTimer();
+            SetupInteractiveBehavior();
         }
 
-        private void StartTimer()
+        private void SetupInteractiveBehavior()
         {
-            System.Windows.Threading.DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(16.67);
-            timer.Tick += (sender, e) =>
+            // Reakcja na zmiany w GUI za pomocą Task
+            PropertyChanged += async (sender, args) =>
             {
-                Move();
+                if (args.PropertyName == nameof(NumberOfBallsToGenerate))
+                {
+                    await Task.Run(() => Start()); // Rozpocznij proces generowania kul na podstawie nowej liczby
+                }
             };
-            timer.Start();
+
+            // Obsługa interakcji z użytkownikiem przy użyciu Task
+            Task.Run(async () =>
+            {
+                while (true)
+                {
+                    await Task.Delay(TimeSpan.FromMilliseconds(16.67)); // Symulacja czasu
+                    Move(); // Wykonaj ruch kulek
+                }
+            });
         }
+
+        public void Start()
+        {
+            _dispatcher.Invoke(() =>
+            {
+                Balls.Clear();
+                _logic.CreateBalls(NumberOfBallsToGenerate);
+                foreach (var ballData in _logic.GetBalls())
+                {
+                    Model ballModel = new Model
+                    {
+                        X = ballData.X,
+                        Y = ballData.Y,
+                        Radius = ballData.Radius,
+                        VelocityX = ballData.VelocityX,
+                        VelocityY = ballData.VelocityY
+                    };
+                    Balls.Add(ballModel);
+                }
+            });
+        }
+
 
         public void Move()
         {
+            _logic.Move(); // Aktualizacja pozycji kulek w logice
+
+            // Synchronizacja pozycji kulek z modelem w warstwie GUI
             foreach (var ball in Balls)
             {
-                ball.X += ball.VelocityX;
-                ball.Y += ball.VelocityY;
-                UpdateBallPositions(ball);
-            }
-
-            OnPropertyChanged(nameof(Balls)); // Odświeżenie widoku po przesunięciu kulek
-        }
-
-
-        private void UpdateBallPositions(Model ball)
-        {
-            if (ball.X - ball.Radius <= 0 || ball.X + ball.Radius >= CanvasWidth)
-            {
-                ball.VelocityX = -ball.VelocityX;
-            }
-
-            if (ball.Y - ball.Radius <= 0 || ball.Y + ball.Radius >= CanvasHeight)
-            {
-                ball.VelocityY = -ball.VelocityY;
+                ball.X = _logic.GetBalls()[Balls.IndexOf(ball)].X;
+                ball.Y = _logic.GetBalls()[Balls.IndexOf(ball)].Y;
             }
         }
-
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
