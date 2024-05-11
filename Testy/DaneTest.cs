@@ -8,7 +8,6 @@ namespace Testy
         [TestMethod]
         public void GetAndSetTest()
         {
-            // Arrange
             double expectedX = 10.0;
             double expectedY = 20.0;
             double expectedRadius = 5.0;
@@ -16,7 +15,6 @@ namespace Testy
             double expectedVelocityY = -3.0;
             double expectedWeight = 15.0;
 
-            // Act
             Dane.Data.Ball ball = new Data.Ball();
             ball.X = expectedX;
             ball.Y = expectedY;
@@ -25,7 +23,6 @@ namespace Testy
             ball.VelocityY = expectedVelocityY;
             ball.Weight = expectedWeight;
 
-            // Assert
             Assert.AreEqual(expectedX, ball.X);
             Assert.AreEqual(expectedY, ball.Y);
             Assert.AreEqual(expectedRadius, ball.Radius);

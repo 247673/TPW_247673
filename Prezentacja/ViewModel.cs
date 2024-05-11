@@ -49,22 +49,20 @@ namespace Prezentacja
 
         private void SetupInteractiveBehavior()
         {
-            // Reakcja na zmiany w GUI za pomocą Task
             PropertyChanged += async (sender, args) =>
             {
                 if (args.PropertyName == nameof(NumberOfBallsToGenerate))
                 {
-                    await Task.Run(() => Start()); // Rozpocznij proces generowania kul na podstawie nowej liczby
+                    await Task.Run(() => Start());
                 }
             };
 
-            // Obsługa interakcji z użytkownikiem przy użyciu Task
             Task.Run(async () =>
             {
                 while (true)
                 {
-                    await Task.Delay(TimeSpan.FromMilliseconds(16.67)); // Symulacja czasu
-                    Move(); // Wykonaj ruch kulek
+                    await Task.Delay(TimeSpan.FromMilliseconds(16.67));
+                    Move();
                 }
             });
         }
@@ -93,9 +91,8 @@ namespace Prezentacja
 
         public void Move()
         {
-            _logic.Move(); // Aktualizacja pozycji kulek w logice
+            _logic.Move();
 
-            // Synchronizacja pozycji kulek z modelem w warstwie GUI
             foreach (var ball in Balls)
             {
                 ball.X = _logic.GetBalls()[Balls.IndexOf(ball)].X;

@@ -19,13 +19,11 @@ namespace Prezentacja
     public partial class MainWindow : Window
     {
         private readonly ViewModel _viewModel;
-        private readonly Logic _logic;
 
         public MainWindow()
         {
             InitializeComponent();
-            _logic = new Logic();
-            _viewModel = new ViewModel(_logic);
+            _viewModel = new ViewModel(new Logic());
             DataContext = _viewModel;
         }
     }

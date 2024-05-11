@@ -24,11 +24,11 @@ namespace Logika
                 balls.Add(new Data.Ball
                 {
                     Radius = 5,
-                    X = _random.Next(5, CanvasWidth - 5), // Ustalamy zakres dla współrzędnych X
-                    Y = _random.Next(5, CanvasHeight - 5), // Ustalamy zakres dla współrzędnych Y
-                    VelocityX = (_random.NextDouble() * 6 - 3), // Ustalamy zakres prędkości X
-                    VelocityY = (_random.NextDouble() * 6 - 3), // Ustalamy zakres prędkości Y
-                    Weight = _random.NextDouble() //Losowa waga dla kazdej kulki
+                    X = _random.Next(5, CanvasWidth - 5),
+                    Y = _random.Next(5, CanvasHeight - 5),
+                    VelocityX = (_random.NextDouble() * 6 - 3),
+                    VelocityY = (_random.NextDouble() * 6 - 3),
+                    Weight = _random.NextDouble()
                 });
             }
         }
@@ -61,20 +61,16 @@ namespace Logika
 
         private void CalculateCollision(Data.Ball ball1, Data.Ball ball2)
         {
-            // Oblicz różnicę prędkości
             double dvx = ball2.VelocityX - ball1.VelocityX;
             double dvy = ball2.VelocityY - ball1.VelocityY;
 
-            // Oblicz sumę mas
             double totalMass = ball1.Weight + ball2.Weight;
 
-            // Oblicz zmianę prędkości dla każdej kuli
             double deltaVx1 = (2 * ball2.Weight * dvx) / totalMass;
             double deltaVy1 = (2 * ball2.Weight * dvy) / totalMass;
             double deltaVx2 = (2 * ball1.Weight * dvx) / totalMass;
             double deltaVy2 = (2 * ball1.Weight * dvy) / totalMass;
 
-            // Aktualizuj prędkości kulek po zderzeniu
             ball1.VelocityX += deltaVx1;
             ball1.VelocityY += deltaVy1;
             ball2.VelocityX -= deltaVx2;

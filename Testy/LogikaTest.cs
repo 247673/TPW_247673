@@ -18,10 +18,10 @@ namespace Testy
             Assert.AreEqual(numberOfBalls, balls.Count);
             foreach (var ball in balls)
             {
-                Assert.IsTrue(ball.X >= 5 && ball.X <= 695); // Sprawdzenie zakresu dla współrzędnych X
-                Assert.IsTrue(ball.Y >= 5 && ball.Y <= 295); // Sprawdzenie zakresu dla współrzędnych Y
-                Assert.IsTrue(ball.VelocityX >= -3 && ball.VelocityX <= 3); // Sprawdzenie zakresu prędkości X
-                Assert.IsTrue(ball.VelocityY >= -3 && ball.VelocityY <= 3); // Sprawdzenie zakresu prędkości Y
+                Assert.IsTrue(ball.X >= 5 && ball.X <= 695);
+                Assert.IsTrue(ball.Y >= 5 && ball.Y <= 295);
+                Assert.IsTrue(ball.VelocityX >= -3 && ball.VelocityX <= 3);
+                Assert.IsTrue(ball.VelocityY >= -3 && ball.VelocityY <= 3);
             }
         }
 
@@ -38,8 +38,8 @@ namespace Testy
 
             logic.Move();
 
-            Assert.AreNotEqual(initialX, ball.X); // Sprawdzamy, czy kula przesunęła się w osi X
-            Assert.AreNotEqual(initialY, ball.Y); // Sprawdzamy, czy kula przesunęła się w osi Y
+            Assert.AreNotEqual(initialX, ball.X);
+            Assert.AreNotEqual(initialY, ball.Y);
         }
 
         [TestMethod]
@@ -49,7 +49,6 @@ namespace Testy
             logic.CreateBalls(4);
             List<Data.Ball> balls = logic.GetBalls();
 
-            // Ustawiamy kule w rogach Canvasu
             balls[0].X = balls[0].Radius + 1; // Górny lewy róg
             balls[0].Y = balls[0].Radius + 1;
             balls[0].VelocityX = -1;
