@@ -40,7 +40,8 @@ namespace Prezentacja
                     Y = ballData.Y,
                     Radius = ballData.Radius,
                     VelocityX = ballData.VelocityX,
-                    VelocityY = ballData.VelocityY
+                    VelocityY = ballData.VelocityY,
+                    Weight = ballData.Weight
                 };
                 Balls.Add(ballModel);
             }
@@ -81,7 +82,8 @@ namespace Prezentacja
                         Y = ballData.Y,
                         Radius = ballData.Radius,
                         VelocityX = ballData.VelocityX,
-                        VelocityY = ballData.VelocityY
+                        VelocityY = ballData.VelocityY,
+                        Weight = ballData.Weight
                     };
                     Balls.Add(ballModel);
                 }

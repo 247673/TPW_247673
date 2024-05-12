@@ -28,7 +28,7 @@ namespace Logika
                     Y = _random.Next(5, CanvasHeight - 5),
                     VelocityX = (_random.NextDouble() * 6 - 3),
                     VelocityY = (_random.NextDouble() * 6 - 3),
-                    Weight = _random.NextDouble()
+                    Weight = _random.Next(1, 10)
                 });
             }
         }
