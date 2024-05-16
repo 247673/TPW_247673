@@ -63,14 +63,19 @@ namespace Logika
 
             CheckWallCollision(ball);
 
-            foreach (var otherBall in _balls)
+            lock (_balls) // Blokada wokół operacji na liście kul
             {
-                if (ball != otherBall && AreColliding(ball, otherBall))
+                foreach (var otherBall in _balls)
                 {
-                    CalculateCollision(ball, otherBall);
+                    if (ball != otherBall && AreColliding(ball, otherBall))
+                    {
+                        CalculateCollision(ball, otherBall);
+                    }
                 }
             }
         }
+
+
 
         private bool AreColliding(Data.Ball ball1, Data.Ball ball2)
         {
@@ -113,7 +118,10 @@ namespace Logika
 
         public List<Data.Ball> GetBalls()
         {
-            return _balls;
+            lock (_balls)
+            {
+                return new List<Data.Ball>(_balls);
+            }
         }
     }
 }
