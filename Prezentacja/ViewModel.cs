@@ -22,9 +22,12 @@ namespace Prezentacja
             get { return _numberOfBallsToGenerate; }
             set
             {
-                _numberOfBallsToGenerate = value;
-                OnPropertyChanged(nameof(NumberOfBallsToGenerate));
-                UpdateBallsAsync();
+                if (_numberOfBallsToGenerate != value)
+                {
+                    _numberOfBallsToGenerate = value;
+                    OnPropertyChanged(nameof(NumberOfBallsToGenerate));
+                    UpdateBallsAsync();
+                }
             }
         }
 

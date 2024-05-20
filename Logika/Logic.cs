@@ -1,6 +1,9 @@
 ﻿using Dane;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Logika
@@ -16,11 +19,14 @@ namespace Logika
         private readonly Random _random = new Random();
         private const int CanvasWidth = 700;
         private const int CanvasHeight = 255;
-        private readonly List<Data.Ball> _balls = new List<Data.Ball>();
-        private readonly List<Task> _tasks = new List<Task>();
+        private List<Data.Ball> _balls = new List<Data.Ball>();
+        private List<Task> _tasks = new List<Task>();
+        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
         public async Task CreateBallsAsync(int numberOfBalls)
         {
+            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource = new CancellationTokenSource();
             _balls.Clear();
             _tasks.Clear();
 
@@ -33,13 +39,13 @@ namespace Logika
                     Y = _random.Next(5, CanvasHeight - 5),
                     VelocityX = (_random.NextDouble() * 6 - 3),
                     VelocityY = (_random.NextDouble() * 6 - 3),
-                    Weight = _random.Next(1, 10)
+                    Weight = _random.Next(1, 5)
                 };
 
                 _balls.Add(ball);
 
                 // Tworzenie osobnego zadania dla poruszania się każdej kuli
-                Task task = Task.Run(() => MoveBallAsync(ball));
+                Task task = Task.Run(() => MoveBallAsync(ball, _cancellationTokenSource.Token));
                 _tasks.Add(task);
             }
 
@@ -47,12 +53,12 @@ namespace Logika
             await Task.WhenAll(_tasks);
         }
 
-        private async Task MoveBallAsync(Data.Ball ball)
+        private async Task MoveBallAsync(Data.Ball ball, CancellationToken cancellationToken)
         {
-            while (true)
+            while (!cancellationToken.IsCancellationRequested)
             {
                 Move(ball);
-                await Task.Delay(TimeSpan.FromMilliseconds(16.67));
+                await Task.Delay(TimeSpan.FromMilliseconds(16.67), cancellationToken);
             }
         }
 
@@ -75,8 +81,6 @@ namespace Logika
             }
         }
 
-
-
         private bool AreColliding(Data.Ball ball1, Data.Ball ball2)
         {
             double dx = ball2.X - ball1.X;
@@ -87,20 +91,21 @@ namespace Logika
 
         private void CalculateCollision(Data.Ball ball1, Data.Ball ball2)
         {
-            double dvx = ball2.VelocityX - ball1.VelocityX;
-            double dvy = ball2.VelocityY - ball1.VelocityY;
+            double dx = ball2.X - ball1.X;
+            double dy = ball2.Y - ball1.Y;
+            double distance = Math.Sqrt(dx * dx + dy * dy);
 
-            double totalMass = ball1.Weight + ball2.Weight;
+            if (distance == 0) return; // Prevent division by zero
 
-            double deltaVx1 = (2 * ball2.Weight * dvx) / totalMass;
-            double deltaVy1 = (2 * ball2.Weight * dvy) / totalMass;
-            double deltaVx2 = (2 * ball1.Weight * dvx) / totalMass;
-            double deltaVy2 = (2 * ball1.Weight * dvy) / totalMass;
+            double vX1 = (ball1.VelocityX * (ball1.Weight - ball2.Weight) + 2 * ball2.Weight * ball2.VelocityX) / (ball1.Weight + ball2.Weight);
+            double vY1 = (ball1.VelocityY * (ball1.Weight - ball2.Weight) + 2 * ball2.Weight * ball2.VelocityY) / (ball1.Weight + ball2.Weight);
+            double vX2 = (ball2.VelocityX * (ball2.Weight - ball1.Weight) + 2 * ball1.Weight * ball1.VelocityX) / (ball1.Weight + ball2.Weight);
+            double vY2 = (ball2.VelocityY * (ball2.Weight - ball1.Weight) + 2 * ball1.Weight * ball1.VelocityY) / (ball1.Weight + ball2.Weight);
 
-            ball1.VelocityX += deltaVx1;
-            ball1.VelocityY += deltaVy1;
-            ball2.VelocityX -= deltaVx2;
-            ball2.VelocityY -= deltaVy2;
+            ball1.VelocityX = vX1;
+            ball1.VelocityY = vY1;
+            ball2.VelocityX = vX2;
+            ball2.VelocityY = vY2;
         }
 
         private void CheckWallCollision(Data.Ball ball)
@@ -118,10 +123,7 @@ namespace Logika
 
         public List<Data.Ball> GetBalls()
         {
-            lock (_balls)
-            {
-                return new List<Data.Ball>(_balls);
-            }
+            return _balls.ToList(); // Convert ConcurrentBag to List for returning
         }
     }
 }
