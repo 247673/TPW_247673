@@ -24,11 +24,12 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </Canvas>
-        <TextBox HorizontalAlignment="Left" Height="43" Margin="448,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="81" TextAlignment="Center"
+        <TextBox HorizontalAlignment="Center" Height="44" Margin="0,44,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="80" TextAlignment="Center"
                  Text="{Binding NumberOfBallsToGenerate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="16"/>
-        <TextBlock HorizontalAlignment="Left" Height="52" Margin="238,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="140" TextAlignment="Center" FontSize="16">
+        <TextBlock HorizontalAlignment="Left" Height="48" Margin="165,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="148" TextAlignment="Center" FontSize="16">
             <Run Text="Wpisz ile kul wygener"/><Run Language="pl-pl" Text="owac"/>
         </TextBlock>
+        <Button Content="Zatrzymaj" HorizontalAlignment="Left" Margin="478,46,0,0" VerticalAlignment="Top" Width="100" Height="40" FontSize="16" Click="Stop_Click" RenderTransformOrigin="-0.112,0.768"/>
+        <Button Content="Wyczyść Log" HorizontalAlignment="Left" Margin="617,46,0,0" VerticalAlignment="Top" Width="100" Height="40" FontSize="16" Click="ClearLog_Click" RenderTransformOrigin="0.341,0.663"/>
     </Grid>
 </Window>
-

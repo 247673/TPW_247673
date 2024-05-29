@@ -26,5 +26,15 @@ namespace Prezentacja
             _viewModel = new ViewModel(new Logic());
             DataContext = _viewModel;
         }
+
+        private void Stop_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.Stop();
+        }
+        private void ClearLog_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.ClearLog();
+        }
+
     }
 }
