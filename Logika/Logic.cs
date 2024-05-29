@@ -1,8 +1,9 @@
 ﻿using Dane;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,6 +13,10 @@ namespace Logika
     {
         Task CreateBallsAsync(int numberOfBalls);
         List<Data.Ball> GetBalls();
+        void Stop();
+        void StartLogging(string logFilePath);
+        void ClearLog();
+        void SetLogFilePath(string logFilePath);
     }
 
     public class Logic : ILogic
@@ -22,6 +27,8 @@ namespace Logika
         private List<Data.Ball> _balls = new List<Data.Ball>();
         private List<Task> _tasks = new List<Task>();
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+        private CancellationTokenSource _loggingCancellationTokenSource = new CancellationTokenSource();
+        private string _logFilePath = "C:\\Users\\Miki\\Desktop\\sem4\\TPW\\TPW_247673\\Log\\log.json";
 
         public async Task CreateBallsAsync(int numberOfBalls)
         {
@@ -123,7 +130,82 @@ namespace Logika
 
         public List<Data.Ball> GetBalls()
         {
-            return _balls.ToList(); // Convert ConcurrentBag to List for returning
+            return _balls.ToList(); // Convert list to List for returning
+        }
+
+        public void Stop()
+        {
+            _cancellationTokenSource.Cancel();
+            _loggingCancellationTokenSource.Cancel();
+        }
+
+        public void StartLogging(string logFilePath)
+        {
+            _logFilePath = logFilePath;
+            _loggingCancellationTokenSource = new CancellationTokenSource();
+
+            Task.Run(async () => await LogBallData(_loggingCancellationTokenSource.Token));
+        }
+
+        public void ClearLog()
+        {
+            try
+            {
+                File.WriteAllText(_logFilePath, string.Empty);
+            }
+            catch (Exception ex)
+            {
+                // Wypisz wyjątek na konsoli
+                Console.WriteLine($"An error occurred while clearing the log file: {ex.Message}");
+            }
+        }
+
+        private async Task LogBallData(CancellationToken cancellationToken)
+        {
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true // To enable pretty print with indents and new lines
+            };
+
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
+                {
+                    var logData = new
+                    {
+                        Timestamp = DateTime.Now,
+                        Balls = _balls.Select(b => new
+                        {
+                            b.X,
+                            b.Y,
+                            b.Radius,
+                            b.VelocityX,
+                            b.VelocityY,
+                            b.Weight
+                        }).ToList()
+                    };
+
+                    string jsonString = JsonSerializer.Serialize(logData, options);
+
+                    // Dodaj nową linię przed zapisaniem nowego wpisu logu
+                    jsonString += Environment.NewLine;
+
+                    // Append the JSON string to the log file
+                    await File.AppendAllTextAsync(_logFilePath, jsonString + Environment.NewLine, cancellationToken);
+                }
+                catch (Exception ex)
+                {
+                    // Wypisz wyjątek na konsoli
+                    Console.WriteLine($"An error occurred while writing to the log file: {ex.Message}");
+                }
+
+                await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+            }
+        }
+
+        public void SetLogFilePath(string logFilePath)
+        {
+            _logFilePath = logFilePath;
         }
     }
 }
