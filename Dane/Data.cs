@@ -1,4 +1,10 @@
-﻿namespace Dane
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
+using System.Threading;
+
+namespace Dane
 {
     public class Data
     {
@@ -10,6 +16,35 @@
             public double VelocityX { get; set; }
             public double VelocityY { get; set; }
             public double Weight { get; set; }
+        }
+
+        private List<Ball> balls = new List<Ball>();
+        private readonly object lockObj = new object();
+
+        public void AddBall(Ball ball)
+        {
+            lock (lockObj)
+            {
+                balls.Add(ball);
+            }
+        }
+
+        public List<Ball> GetBalls()
+        {
+            lock (lockObj)
+            {
+                return new List<Ball>(balls);
+            }
+        }
+
+        public void LogState()
+        {
+            lock (lockObj)
+            {
+                var options = new JsonSerializerOptions { WriteIndented = true };
+                string jsonString = JsonSerializer.Serialize(balls, options);
+                File.AppendAllText("log.json", jsonString + Environment.NewLine);
+            }
         }
     }
 }
