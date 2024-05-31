@@ -28,7 +28,7 @@ namespace Logika
         private List<Task> _tasks = new List<Task>();
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private CancellationTokenSource _loggingCancellationTokenSource = new CancellationTokenSource();
-        private string _logFilePath = "C:\\Users\\Miki\\Desktop\\sem4\\TPW\\TPW_247673\\Log\\log.json";
+        private string _logFilePath = "..\\..\\..\\..\\log.json";
 
         public async Task CreateBallsAsync(int numberOfBalls)
         {

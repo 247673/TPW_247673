@@ -24,6 +24,7 @@ public class ViewModel : INotifyPropertyChanged
                 _numberOfBallsToGenerate = value;
                 OnPropertyChanged(nameof(NumberOfBallsToGenerate));
                 UpdateBallsAsync();
+                StartLogging();
             }
         }
     }
@@ -31,7 +32,7 @@ public class ViewModel : INotifyPropertyChanged
     public ViewModel(ILogic logic)
     {
         _logic = logic;
-        _logic.StartLogging("C:\\Users\\Miki\\Desktop\\sem4\\TPW\\TPW_247673\\Log\\log.json");
+        ClearLog();
         UpdateBallsAsync();
         SetupInteractiveBehavior();
     }
@@ -54,7 +55,7 @@ public class ViewModel : INotifyPropertyChanged
         });
     }
 
-    public void Move()
+    private void Move()
     {
         UpdateBallsUI();
     }
@@ -83,7 +84,11 @@ public class ViewModel : INotifyPropertyChanged
     {
         _logic.Stop();
     }
-    public void ClearLog()
+    private void StartLogging()
+    {
+        _logic.StartLogging("..\\..\\..\\..\\log.json");
+    }
+    private void ClearLog()
     {
         _logic.ClearLog();
     }

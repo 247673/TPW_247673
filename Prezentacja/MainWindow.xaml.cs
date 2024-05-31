@@ -31,10 +31,5 @@ namespace Prezentacja
         {
             _viewModel.Stop();
         }
-        private void ClearLog_Click(object sender, RoutedEventArgs e)
-        {
-            _viewModel.ClearLog();
-        }
-
     }
 }
