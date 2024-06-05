@@ -36,15 +36,5 @@ namespace Dane
                 return new List<Ball>(balls);
             }
         }
-
-        public void LogState()
-        {
-            lock (lockObj)
-            {
-                var options = new JsonSerializerOptions { WriteIndented = true };
-                string jsonString = JsonSerializer.Serialize(balls, options);
-                File.AppendAllText("log.json", jsonString + Environment.NewLine);
-            }
-        }
     }
 }

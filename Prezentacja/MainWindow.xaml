@@ -29,6 +29,5 @@
         <TextBlock HorizontalAlignment="Left" Height="48" Margin="165,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="148" TextAlignment="Center" FontSize="16">
             <Run Text="Wpisz ile kul wygener"/><Run Language="pl-pl" Text="owac"/>
         </TextBlock>
-        <Button Content="Zatrzymaj" HorizontalAlignment="Left" Margin="508,48,0,0" VerticalAlignment="Top" Width="100" Height="40" FontSize="16" Click="Stop_Click" RenderTransformOrigin="-0.112,0.768"/>
-    </Grid>
+        </Grid>
 </Window>

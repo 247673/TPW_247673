@@ -24,7 +24,6 @@ public class ViewModel : INotifyPropertyChanged
                 _numberOfBallsToGenerate = value;
                 OnPropertyChanged(nameof(NumberOfBallsToGenerate));
                 UpdateBallsAsync();
-                StartLogging();
             }
         }
     }
@@ -32,7 +31,6 @@ public class ViewModel : INotifyPropertyChanged
     public ViewModel(ILogic logic)
     {
         _logic = logic;
-        ClearLog();
         UpdateBallsAsync();
         SetupInteractiveBehavior();
     }
@@ -79,18 +77,6 @@ public class ViewModel : INotifyPropertyChanged
                 Balls.Add(ballModel);
             }
         });
-    }
-    public void Stop()
-    {
-        _logic.Stop();
-    }
-    private void StartLogging()
-    {
-        _logic.StartLogging("..\\..\\..\\..\\log.json");
-    }
-    private void ClearLog()
-    {
-        _logic.ClearLog();
     }
 
     protected virtual void OnPropertyChanged(string propertyName)
